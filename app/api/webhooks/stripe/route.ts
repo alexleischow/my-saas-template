@@ -32,8 +32,7 @@ export async function POST(request: NextRequest) {
       if (userId) {
         await supabase
           .from('profiles')
-          .update({ subscription_status: 'active', stripe_customer_id: customerId })
-          .eq('id', userId)
+          .upsert({ id: userId, subscription_status: 'active', stripe_customer_id: customerId })
       }
       break
     }

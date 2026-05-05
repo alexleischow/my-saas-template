@@ -19,6 +19,14 @@ export default async function DashboardLayout({
 
   if (!user) redirect('/login')
 
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('subscription_status')
+    .eq('id', user.id)
+    .single()
+
+  if (profile?.subscription_status !== 'active') redirect('/subscribe')
+
   return (
     <div className="flex min-h-screen bg-background">
       {/* Sidebar — hidden on mobile */}

@@ -4,11 +4,9 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { CheckoutButton } from '@/components/checkout-button'
 import {
   Users,
   DollarSign,
@@ -36,26 +34,13 @@ const checklist = [
   { label: 'Deploy to Vercel', done: false },
 ]
 
-export default async function DashboardPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ paid?: string }>
-}) {
+export default async function DashboardPage() {
   const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
   if (!user) redirect('/login')
-
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('subscription_status')
-    .eq('id', user.id)
-    .single()
-
-  const { paid } = await searchParams
-  const isActive = profile?.subscription_status === 'active'
 
   return (
     <div className="space-y-8 max-w-5xl">
@@ -99,62 +84,8 @@ export default async function DashboardPage({
         </div>
       </section>
 
-      {/* Lower grid */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* Subscription card — all existing logic preserved */}
-        {isActive ? (
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <span className="size-2 rounded-full bg-green-500 inline-block" />
-                Subscription active
-              </CardTitle>
-              <CardDescription>Your Pro plan is active and up to date.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-1.5">
-              <p className="text-sm">Pro plan · $20 / month</p>
-              <p className="text-sm text-muted-foreground">
-                Signed in as <strong>{user.email}</strong>
-              </p>
-            </CardContent>
-          </Card>
-        ) : paid ? (
-          <Card>
-            <CardHeader>
-              <CardTitle>Payment received</CardTitle>
-              <CardDescription>Activating your subscription…</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                This usually takes just a moment. Refresh the page if it doesn&apos;t update.
-              </p>
-            </CardContent>
-          </Card>
-        ) : (
-          <Card className="border-2 border-foreground">
-            <CardHeader>
-              <CardTitle>Upgrade to Pro</CardTitle>
-              <CardDescription>
-                Get full access for $20/month. Cancel any time.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground space-y-2">
-                {['Unlimited access', 'Priority support', 'All future features'].map((f) => (
-                  <li key={f} className="flex items-center gap-2">
-                    <CheckCircle2 className="size-3.5 shrink-0 text-foreground" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-            <CardFooter>
-              <CheckoutButton />
-            </CardFooter>
-          </Card>
-        )}
-
-        {/* Template checklist */}
+      {/* Launch checklist */}
+      <div className="max-w-sm">
         <Card>
           <CardHeader>
             <CardTitle>Launch checklist</CardTitle>

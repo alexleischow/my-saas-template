@@ -37,9 +37,32 @@ export async function POST(request: NextRequest) {
       break
     }
 
+    case 'customer.subscription.updated': {
+      const subscription = event.data.object as Stripe.Subscription
+      const customerId = subscription.customer as string
+      const isActive = subscription.status === 'active' || subscription.status === 'trialing'
+
+      await supabase
+        .from('profiles')
+        .update({ subscription_status: isActive ? 'active' : 'inactive' })
+        .eq('stripe_customer_id', customerId)
+      break
+    }
+
     case 'customer.subscription.deleted': {
       const subscription = event.data.object as Stripe.Subscription
       const customerId = subscription.customer as string
+
+      await supabase
+        .from('profiles')
+        .update({ subscription_status: 'inactive' })
+        .eq('stripe_customer_id', customerId)
+      break
+    }
+
+    case 'invoice.payment_failed': {
+      const invoice = event.data.object as Stripe.Invoice
+      const customerId = invoice.customer as string
 
       await supabase
         .from('profiles')

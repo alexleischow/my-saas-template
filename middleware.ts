@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-export async function proxy(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
@@ -23,8 +23,10 @@ export async function proxy(request: NextRequest) {
     }
   )
 
-  // Refresh session — must not be removed, keeps JWT fresh
-  const { data: { user } } = await supabase.auth.getUser()
+  // Required: refreshes the session cookie so the JWT never silently expires.
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
   const { pathname } = request.nextUrl
 

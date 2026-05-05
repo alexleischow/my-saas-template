@@ -1,8 +1,4 @@
 import Link from 'next/link'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
-import { buttonVariants } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
 import {
   ShieldCheck,
   CreditCard,
@@ -14,42 +10,56 @@ import {
   ArrowRight,
 } from 'lucide-react'
 
+const FROST = 'rgba(214,235,253,0.19)'
+
 const features = [
   {
     icon: ShieldCheck,
     title: 'Authentication',
     description:
-      'Email/password auth with Supabase. Confirm emails, reset passwords, and manage sessions — all wired up.',
+      'Email/password auth with Supabase. Sessions, confirmation emails, and password reset — all wired up.',
+    accent: '#11ff99',
+    accentBg: 'rgba(17,255,153,0.07)',
   },
   {
     icon: CreditCard,
-    title: 'Stripe Payments',
+    title: 'Stripe Billing',
     description:
-      'Subscription billing with webhook handling, signature verification, and automatic status syncing.',
+      'Subscription billing with webhook signature verification and automatic status syncing to your database.',
+    accent: '#ff801f',
+    accentBg: 'rgba(255,128,31,0.07)',
   },
   {
     icon: Database,
     title: 'Postgres + RLS',
     description:
-      'Supabase Postgres with row-level security policies from day one. Your data is protected at the database layer.',
+      'Supabase Postgres with row-level security and column-level grants enforced at the database layer.',
+    accent: '#3b9eff',
+    accentBg: 'rgba(59,158,255,0.07)',
   },
   {
     icon: Rocket,
     title: 'Deploy to Vercel',
     description:
-      'Optimized for Vercel with Next.js 15 App Router, Server Components, and edge-ready API routes.',
+      'Next.js 15 App Router, Server Components, and edge-ready API routes. One command to ship.',
+    accent: '#ff801f',
+    accentBg: 'rgba(255,128,31,0.07)',
   },
   {
     icon: Code2,
     title: 'Fully Typed',
     description:
-      'TypeScript throughout — from database queries to UI components. Catch errors before they ship.',
+      'TypeScript from database queries to UI components. Catch bugs before they reach production.',
+    accent: '#3b9eff',
+    accentBg: 'rgba(59,158,255,0.07)',
   },
   {
     icon: Zap,
-    title: 'Production-Ready',
+    title: 'Security Audited',
     description:
-      'Security-audited, RLS enforced, webhooks verified. Skip the scary stuff and focus on your product.',
+      'RLS enforced, webhooks signature-checked, server-only secrets verified. Production from day one.',
+    accent: '#11ff99',
+    accentBg: 'rgba(17,255,153,0.07)',
   },
 ]
 
@@ -62,151 +72,177 @@ const pricingFeatures = [
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Navbar */}
-      <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="size-6 rounded bg-foreground" />
-            <span className="font-semibold text-sm">LaunchKit</span>
-          </div>
-          <nav className="flex items-center gap-2">
-            <Link
-              href="/login"
-              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}
-            >
-              Sign in
-            </Link>
-            <Link
-              href="/signup"
-              className={cn(buttonVariants({ size: 'sm' }))}
-            >
-              Get started
-            </Link>
-          </nav>
-        </div>
-      </header>
+    <div className="min-h-screen bg-black text-[#f0f0f0] flex flex-col">
+      {/* ── Navbar ──────────────────────────────────────────────────── */}
+      <header
+        className="sticky top-0 z-50 flex items-center justify-between h-14 px-6 sm:px-10 bg-black/80 backdrop-blur-md"
+        style={{ borderBottom: `1px solid ${FROST}` }}
+      >
+        <Link href="/" className="flex items-center gap-2.5">
+          <div className="size-5 rounded-sm bg-[#f0f0f0]" />
+          <span className="text-sm font-medium tracking-tight">LaunchKit</span>
+        </Link>
 
-      {/* Hero */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-24 sm:py-32 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs text-muted-foreground mb-8">
-          <span className="size-1.5 rounded-full bg-green-500" />
-          Open source · Next.js 15 · Supabase · Stripe
-        </div>
-        <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-foreground mb-6 max-w-3xl mx-auto leading-tight">
-          Ship your SaaS in{' '}
-          <span className="text-muted-foreground">days</span>
-          {', '}not months
-        </h1>
-        <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-10">
-          A production-ready Next.js 15 starter with authentication, subscription payments,
-          and a secure database already wired up and security-audited.
-        </p>
-        <div className="flex items-center justify-center gap-3 flex-wrap">
+        <nav className="flex items-center gap-1">
+          <Link
+            href="/login"
+            className="px-4 py-1.5 rounded-full text-sm text-[#a1a4a5] hover:text-[#f0f0f0] transition-colors"
+          >
+            Sign in
+          </Link>
           <Link
             href="/signup"
-            className={cn(buttonVariants({ size: 'lg' }), 'gap-2')}
+            className="px-4 py-1.5 rounded-full text-sm bg-white text-black font-medium hover:bg-[#f0f0f0] transition-colors"
           >
-            Get started free <ArrowRight className="size-4" />
+            Get started
+          </Link>
+        </nav>
+      </header>
+
+      {/* ── Hero ────────────────────────────────────────────────────── */}
+      <section className="flex flex-col items-center text-center px-6 pt-28 pb-28 sm:pt-36 sm:pb-36">
+        {/* Badge */}
+        <div
+          className="inline-flex items-center gap-2 rounded-full px-3.5 py-1 text-xs text-[#a1a4a5] mb-8"
+          style={{ border: `1px solid ${FROST}` }}
+        >
+          <span className="size-1.5 rounded-full bg-[#11ff99]" />
+          Open source · Next.js 15 · Supabase · Stripe
+        </div>
+
+        {/* Headline — Playfair Display at display scale */}
+        <h1 className="font-heading text-[3.6rem] sm:text-[5.5rem] leading-none tracking-[-0.02em] text-[#f0f0f0] max-w-4xl mb-6">
+          Ship your SaaS in days,{' '}
+          <span className="text-[#464a4d]">not months.</span>
+        </h1>
+
+        {/* Sub */}
+        <p className="text-lg text-[#a1a4a5] max-w-md mb-10 leading-relaxed">
+          A production-ready starter with authentication, subscription payments,
+          and a secure database already wired up and audited.
+        </p>
+
+        {/* CTAs */}
+        <div className="flex items-center gap-3 flex-wrap justify-center">
+          <Link
+            href="/signup"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black text-sm font-medium hover:bg-[#f0f0f0] transition-colors"
+          >
+            Get started free <ArrowRight className="size-3.5" />
           </Link>
           <Link
             href="/login"
-            className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
+            className="inline-flex items-center px-5 py-2.5 rounded-full text-sm text-[#f0f0f0] hover:bg-white/[0.06] transition-colors"
+            style={{ border: `1px solid ${FROST}` }}
           >
             Sign in
           </Link>
         </div>
       </section>
 
-      <Separator />
+      {/* ── Divider ─────────────────────────────────────────────────── */}
+      <div className="h-px" style={{ background: FROST }} />
 
-      {/* Features */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-24">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold tracking-tight mb-3">
-            Everything you need to launch
+      {/* ── Features ────────────────────────────────────────────────── */}
+      <section className="px-6 sm:px-12 py-28 sm:py-36 max-w-6xl mx-auto w-full">
+        <div className="mb-16 max-w-sm">
+          <h2 className="font-heading text-[2.4rem] sm:text-[3.2rem] leading-tight tracking-[-0.02em] text-[#f0f0f0] mb-4">
+            Everything to launch.
           </h2>
-          <p className="text-muted-foreground max-w-md mx-auto">
-            Skip months of boilerplate. The hard parts are already built, tested, and secured.
+          <p className="text-[#a1a4a5] leading-relaxed">
+            The hard parts are already built, tested, and secured. Just clone
+            and ship.
           </p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {features.map((feature) => (
-            <Card key={feature.title}>
-              <CardHeader>
-                <div className="size-9 rounded-lg bg-muted flex items-center justify-center mb-3">
-                  <feature.icon className="size-4 text-foreground" />
-                </div>
-                <CardTitle className="text-base">{feature.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {feature.description}
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px"
+          style={{ background: FROST }}>
+          {features.map((f) => (
+            <div
+              key={f.title}
+              className="bg-black p-7 flex flex-col gap-4 hover:bg-[#080808] transition-colors"
+            >
+              <div
+                className="size-9 rounded-lg flex items-center justify-center shrink-0"
+                style={{ background: f.accentBg }}
+              >
+                <f.icon className="size-4" style={{ color: f.accent }} />
+              </div>
+              <div>
+                <h3 className="text-[#f0f0f0] font-medium mb-1.5">{f.title}</h3>
+                <p className="text-[#a1a4a5] text-sm leading-relaxed">
+                  {f.description}
                 </p>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
       </section>
 
-      <Separator />
+      {/* ── Divider ─────────────────────────────────────────────────── */}
+      <div className="h-px" style={{ background: FROST }} />
 
-      {/* Pricing */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-24">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold tracking-tight mb-3">Simple pricing</h2>
-          <p className="text-muted-foreground">
-            One plan. Everything included. No surprises.
+      {/* ── Pricing ─────────────────────────────────────────────────── */}
+      <section className="px-6 py-28 sm:py-36 flex flex-col items-center">
+        <h2 className="font-heading text-[2.4rem] sm:text-[3.2rem] leading-tight tracking-[-0.02em] text-[#f0f0f0] mb-3 text-center">
+          Simple pricing.
+        </h2>
+        <p className="text-[#a1a4a5] mb-14 text-center">
+          One plan. Everything included. No surprises.
+        </p>
+
+        <div
+          className="w-full max-w-xs rounded-2xl p-8"
+          style={{ border: `1px solid ${FROST}` }}
+        >
+          <p className="text-xs text-[#a1a4a5] uppercase tracking-widest mb-3">
+            Pro
           </p>
-        </div>
-        <div className="max-w-xs mx-auto">
-          <Card className="border-2 border-foreground">
-            <CardHeader>
-              <CardTitle>Pro</CardTitle>
-              <CardDescription>Full access to everything</CardDescription>
-              <div className="flex items-baseline gap-1 pt-2">
-                <span className="text-4xl font-bold">$20</span>
-                <span className="text-muted-foreground text-sm">/month</span>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2.5">
-                {pricingFeatures.map((f) => (
-                  <li key={f} className="flex items-center gap-2.5 text-sm">
-                    <Check className="size-4 flex-shrink-0" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-            <CardFooter>
-              <Link
-                href="/signup"
-                className={cn(buttonVariants(), 'w-full gap-2')}
+          <div className="flex items-baseline gap-1.5 mb-7">
+            <span className="text-5xl font-semibold text-[#f0f0f0] font-heading">
+              $20
+            </span>
+            <span className="text-[#a1a4a5] text-sm">/month</span>
+          </div>
+
+          <ul className="space-y-3 mb-8">
+            {pricingFeatures.map((item) => (
+              <li
+                key={item}
+                className="flex items-center gap-3 text-sm text-[#f0f0f0]"
               >
-                Get started <ArrowRight className="size-4" />
-              </Link>
-            </CardFooter>
-          </Card>
+                <Check className="size-4 shrink-0" style={{ color: '#11ff99' }} />
+                {item}
+              </li>
+            ))}
+          </ul>
+
+          <Link
+            href="/signup"
+            className="flex items-center justify-center gap-2 w-full py-2.5 rounded-full bg-white text-black text-sm font-medium hover:bg-[#f0f0f0] transition-colors"
+          >
+            Get started <ArrowRight className="size-3.5" />
+          </Link>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t mt-auto">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <div className="size-5 rounded bg-foreground" />
-            <span className="font-semibold text-foreground">LaunchKit</span>
-          </div>
-          <p>Built with Next.js 15, Supabase, and Stripe.</p>
-          <div className="flex items-center gap-4">
-            <Link href="/login" className="hover:text-foreground transition-colors">
-              Sign in
-            </Link>
-            <Link href="/signup" className="hover:text-foreground transition-colors">
-              Sign up
-            </Link>
-          </div>
+      {/* ── Footer ──────────────────────────────────────────────────── */}
+      <footer
+        className="px-6 sm:px-12 py-8 mt-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[#464a4d]"
+        style={{ borderTop: `1px solid ${FROST}` }}
+      >
+        <div className="flex items-center gap-2">
+          <div className="size-4 rounded-sm bg-[#464a4d]" />
+          <span className="text-[#a1a4a5] font-medium">LaunchKit</span>
+        </div>
+        <p>Built with Next.js 15, Supabase, and Stripe.</p>
+        <div className="flex items-center gap-5">
+          <Link href="/login" className="hover:text-[#f0f0f0] transition-colors">
+            Sign in
+          </Link>
+          <Link href="/signup" className="hover:text-[#f0f0f0] transition-colors">
+            Sign up
+          </Link>
         </div>
       </footer>
     </div>
